@@ -6,7 +6,9 @@ import java.util.zip.ZipOutputStream;
 
 public class Main {
     public static void main(String[] args) {
-        List<String> fileName = Arrays.asList("C:\\Games\\savegames\\data1.dat", "C:\\Games\\savegames\\data2.dat", "C:\\Games\\savegames\\data3.dat");
+        List<String> fileName = Arrays.asList("C:\\Games\\savegames\\data1.dat"
+                , "C:\\Games\\savegames\\data2.dat"
+                , "C:\\Games\\savegames\\data3.dat");
 
         saveGame(fileName.get(0), new GameProgress(10, 2, 2, 2.5));
         saveGame(fileName.get(1), new GameProgress(40, 4, 3, 3.8));
@@ -28,9 +30,12 @@ public class Main {
         try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(dirZip))) {
 
             for (String flt : fileName) {
+                int lastPath = flt.lastIndexOf(File.separator);
+                String name = flt.substring(lastPath + 1);
+
                 try (FileInputStream fis = new FileInputStream(flt)) {
 
-                    ZipEntry entry = new ZipEntry(flt);
+                    ZipEntry entry = new ZipEntry(name);
                     zout.putNextEntry(entry);
 
                     byte[] buffer = new byte[fis.available()];
